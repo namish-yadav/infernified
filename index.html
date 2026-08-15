@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Infernified</title>
+<meta name="description" content="A privacy-conscious password security analyzer. Local analysis, k-anonymity breach checking, no password ever stored or transmitted in full." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+<link rel="manifest" href="assets/site.webmanifest">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="#" class="wordmark">
+      <span class="wordmark-name">INFERNIFIED</span>
+      <span class="wordmark-label">Password Security Analyzer</span>
+    </a>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="#analyzer">Analyzer</a>
+      <a href="#how-it-works">How It Works</a>
+      <a href="#privacy">Privacy</a>
+      <a href="#credits">Credits</a>
+    </nav>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mobileNav" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav class="mobile-nav" id="mobileNav" aria-label="Primary mobile">
+    <a href="#analyzer">Analyzer</a>
+    <a href="#how-it-works">How It Works</a>
+    <a href="#privacy">Privacy</a>
+    <a href="#credits">Credits</a>
+  </nav>
+</header>
+
+<main id="main">
+
+  <!-- ============ HERO / ANALYZER ============ -->
+  <section class="hero" id="analyzer">
+    <div class="hero-inner">
+
+      <div class="hero-left">
+        <p class="eyebrow">Security / Password Analysis</p>
+        <h1>Is your password actually secure?</h1>
+        <p class="hero-sub">
+          Analyze strength, patterns, and known breach exposure
+          without ever storing or transmitting your password.
+        </p>
+
+        <form class="analyzer-form" id="analyzerForm" autocomplete="off">
+          <div class="password-field">
+            <label for="passwordInput" class="visually-hidden">Enter a password to analyze</label>
+            <input
+              type="password"
+              id="passwordInput"
+              name="password"
+              placeholder="Enter a password to analyze"
+              autocomplete="new-password"
+              spellcheck="false"
+            />
+            <button type="button" class="icon-btn" id="toggleVisibility" aria-label="Show password" aria-pressed="false">
+              <svg class="icon-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+              <svg class="icon-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" hidden>
+                <path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a20.3 20.3 0 0 1 5.06-5.94M9.9 4.24A10.4 10.4 0 0 1 12 4c7 0 11 7 11 7a20.3 20.3 0 0 1-3.22 4.06M14.12 14.12a3 3 0 1 1-4.24-4.24"/>
+                <path d="M1 1l22 22"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-primary" id="analyzeBtn">Analyze</button>
+            <button type="button" class="btn-ghost" id="clearBtn">Clear</button>
+          </div>
+
+          <p class="local-note">
+            Your password is analyzed locally. Breach checking uses a privacy-preserving k-anonymity approach
+            the full password is never sent anywhere.
+          </p>
+        </form>
+      </div>
+
+      <div class="hero-right">
+        <div class="score-panel" id="scorePanel" aria-live="polite">
+          <p class="score-label">Security Score</p>
+          <div class="score-value-row">
+            <span class="score-value" id="scoreValue">—</span>
+            <span class="score-max">/100</span>
+          </div>
+          <p class="score-classification" id="scoreClassification">Awaiting input</p>
+          <div class="score-track" role="img" aria-label="Score indicator">
+            <div class="score-fill" id="scoreFill"></div>
+          </div>
+          <p class="score-footnote">Estimated, based on local password characteristics.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ REPORT ============ -->
+  <section class="report-section" id="report" hidden>
+    <div class="report-inner">
+      <p class="section-eyebrow">Password Analysis</p>
+      <hr class="divider" />
+
+      <div class="report-row report-row--summary">
+        <div>
+          <p class="report-label">Security Score</p>
+          <p class="report-summary-text" id="reportSummary">—</p>
+        </div>
+      </div>
+      <hr class="divider" />
+
+      <div class="report-row">
+        <p class="report-label">Composition</p>
+        <dl class="composition-list" id="compositionList"></dl>
+      </div>
+      <hr class="divider" />
+
+      <div class="report-row">
+        <p class="report-label">Patterns</p>
+        <p class="report-text" id="patternText">—</p>
+      </div>
+      <hr class="divider" />
+
+      <div class="report-row">
+        <p class="report-label">Entropy</p>
+        <p class="report-text" id="entropyText">—</p>
+      </div>
+      <hr class="divider" />
+
+      <div class="report-row">
+        <p class="report-label">Exposure</p>
+        <p class="report-status" id="exposureStatus">—</p>
+        <p class="report-text-sub" id="exposureNote"></p>
+      </div>
+      <hr class="divider" />
+
+      <div class="report-row">
+        <p class="report-label">Recommendation</p>
+        <p class="report-text" id="recommendationText">—</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ GENERATOR ============ -->
+  <section class="generator-section" id="generator">
+    <div class="generator-inner">
+      <p class="section-eyebrow">Password Generator</p>
+      <hr class="divider" />
+
+      <div class="generator-grid">
+        <div class="generator-controls">
+          <div class="control-row">
+            <label for="genLength">Length</label>
+            <div class="length-control">
+              <input type="range" id="genLength" min="8" max="64" value="20" />
+              <output id="genLengthValue" for="genLength">20</output>
+            </div>
+          </div>
+
+          <div class="control-row control-row--checks">
+            <label class="checkbox">
+              <input type="checkbox" id="genUpper" checked />
+              <span>Uppercase (A–Z)</span>
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" id="genLower" checked />
+              <span>Lowercase (a–z)</span>
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" id="genNumbers" checked />
+              <span>Numbers (0–9)</span>
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" id="genSymbols" checked />
+              <span>Symbols (!@#…)</span>
+            </label>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn-primary" id="generateBtn">Generate</button>
+          </div>
+        </div>
+
+        <div class="generator-output">
+          <label for="generatedPassword" class="visually-hidden">Generated password</label>
+          <div class="generated-row">
+            <input type="text" id="generatedPassword" readonly placeholder="Your generated password will appear here" />
+            <button type="button" class="icon-btn" id="copyBtn" aria-label="Copy password">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                <rect x="9" y="9" width="12" height="12" rx="1.5"/>
+                <path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/>
+              </svg>
+            </button>
+          </div>
+          <p class="copy-feedback" id="copyFeedback" aria-live="polite"></p>
+          <p class="report-footnote">Generated locally using your browser's cryptographic random source. Nothing is stored.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOW IT WORKS ============ -->
+  <section class="how-section" id="how-it-works">
+    <div class="how-inner">
+      <p class="section-eyebrow">How It Works</p>
+      <hr class="divider" />
+
+      <div class="how-grid">
+        <div class="how-col">
+          <p class="how-label">Strength analysis</p>
+          <p class="report-text">
+            Everything about length, character composition, repetition, and predictable
+            patterns is calculated in your browser. Your password never leaves the page
+            for this part of the analysis.
+          </p>
+        </div>
+        <div class="how-col">
+          <p class="how-label">Breach check</p>
+          <ol class="flow-list">
+            <li>Your password is hashed locally with SHA-1.</li>
+            <li>Only the first 5 characters of that hash are sent to Have I Been Pwned.</li>
+            <li>HIBP returns a list of matching hash suffixes not passwords.</li>
+            <li>The comparison against your full hash happens locally, in your browser.</li>
+            <li>Only the result found or not found is shown to you.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="how-explainer">
+        <p class="report-text">
+          <strong>Length</strong> longer passwords are generally harder to guess or brute-force.
+        </p>
+        <p class="report-text">
+          <strong>Uniqueness</strong> reusing a password across accounts means one breach can compromise all of them.
+        </p>
+        <p class="report-text">
+          <strong>Unpredictability</strong> names, dates, sequences, keyboard patterns, and common
+          phrases are the first things attackers try.
+        </p>
+        <p class="report-text">
+          <strong>Breach exposure</strong> a strong-looking password can still be unsafe if it has
+          already appeared in known breach data.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PRIVACY ============ -->
+  <section class="privacy-section" id="privacy">
+    <div class="privacy-inner">
+      <p class="section-eyebrow">Privacy</p>
+      <hr class="divider" />
+      <ul class="privacy-list">
+        <li>Password analysis happens entirely in your browser. Nothing is uploaded.</li>
+        <li>Your password is never stored not in memory beyond the session, not in a database, not anywhere.</li>
+        <li>The breach check uses a k-anonymity approach: only a partial hash prefix is sent to Have I Been Pwned.</li>
+        <li>The full password is never sent to HIBP, or to any server.</li>
+        <li>Passwords are never written to the URL, localStorage, sessionStorage, analytics, or console logs.</li>
+        <li>Do not enter a password belonging to another person without their authorization.</li>
+      </ul>
+
+      <p class="disclaimer">
+        Infernified provides an educational estimate of password strength and known breach
+        exposure. Results are not a guarantee of security and should not be treated as a
+        professional cybersecurity audit or legal advice.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ CREDITS ============ -->
+  <section class="credits-section" id="credits">
+    <div class="credits-inner">
+      <p class="section-eyebrow">Credits</p>
+      <hr class="divider" />
+
+      <p class="credits-built-by">Built by</p>
+
+      <div class="credit-main">
+        <p class="credit-name">Namish Yadav</p>
+        <p class="credit-role">Main Author / Lead Developer</p>
+        <div class="credit-links">
+          <a href="https://github.com/namish-yadav" target="_blank" rel="noopener noreferrer">GitHub · @namish-yadav</a>
+          <a href="https://instagram.com/nam7sh" target="_blank" rel="noopener noreferrer">Instagram · @nam7sh</a>
+          <a href="https://www.linkedin.com/in/namish-yadav-639769408/" target="_blank" rel="noopener noreferrer">LinkedIn · Namish Yadav</a>
+        </div>
+      </div>
+
+      <p class="credits-with">With</p>
+
+      <div class="credit-co-list">
+        <div class="credit-co">
+          <p class="credit-name credit-name--co">Harshiv Patel</p>
+          <p class="credit-role">Co-author / Contributor</p>
+          <a href="https://github.com/Harshiv-6967" target="_blank" rel="noopener noreferrer">GitHub · @Harshiv-6967</a>
+        </div>
+        <div class="credit-co">
+          <p class="credit-name credit-name--co">Rushda Khan</p>
+          <p class="credit-role">Co-author / Contributor</p>
+          <a href="https://github.com/rushdakhan-byte" target="_blank" rel="noopener noreferrer">GitHub · @rushdakhan-byte</a>
+         <!-- not needed <span class="credit-pending">GitHub · Pending</span> --> 
+        </div>
+        <div class="credit-co">
+          <p class="credit-name credit-name--co">Lubna nawaz</p>
+          <p class="credit-role">Co-author / Contributor</p>
+          <a href="https://github.com/lubnanawaz" target="_blank" rel="noopener noreferrer">GitHub · @lubnanawaz</a>
+
+           <!-- not needed <span class="credit-pending">GitHub · Pending</span> --> 
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span class="wordmark-name wordmark-name--small">INFERNIFIED</span>
+    <nav class="footer-nav" aria-label="Footer">
+      <a href="#analyzer">Analyzer</a>
+      <a href="#how-it-works">How It Works</a>
+      <a href="#privacy">Privacy</a>
+      <a href="#credits">Credits</a>
+    </nav>
+    <p class="footer-note">A first-year cybersecurity portfolio project.</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
