@@ -17,7 +17,7 @@ itself.
 
 ![Infernified Preview](assets/preview.png)
 
-*(Add a screenshot of the app at `assets/preview.png` to display it here.)*
+
 
 ## Features
 
