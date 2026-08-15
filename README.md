@@ -152,5 +152,5 @@ Instagram: [@nam7sh](https://instagram.com/nam7sh)
 |---|---|---|
 | Namish Yadav | Main Author / Lead Developer | [@namish-yadav](https://github.com/namish-yadav) |
 | Harshiv Patel | Co-author / Contributor | [@Harshiv-6967](https://github.com/Harshiv-6967) |
-| Lubna Khan | Co-author / Contributor | https://github.com/Lubnanawaz  |
-| Rushda Khan | Co-author / Contributor | https://github.com/rushdakhan-byte |
+| Lubna Khan | Co-author / Contributor | [@Lubnanawaz] https://github.com/Lubnanawaz  |
+| Rushda Khan | Co-author / Contributor |[@rushdakhan-byte] https://github.com/rushdakhan-byte |
